@@ -1,0 +1,542 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- displays site properly based on user's device -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="./images/favicon-32x32.png"
+		/>
+		<link rel="stylesheet" type="text/css" href="app.css" />
+		<script
+			crossorigin
+			src="https://unpkg.com/react@18/umd/react.development.js"
+		></script>
+		<script
+			crossorigin
+			src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+		></script>
+		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+		<title>Todo app</title>
+
+		<style></style>
+	</head>
+	<body>
+		<di class="app" id="app">hello</di>
+
+		<!-- -->
+
+		<script type="text/babel">
+			function ToDo(props) {
+				return (
+					<div className='todoList'>
+						<ul>
+							{props.lists.map((list, index) => {
+								return (
+									<li
+										key={index}
+										draggable
+										onDragStart={(e) => props.handleDragStart(e, list)}
+										onDragOver={(e) => props.handleDragOver(e, list)}
+										onDragEnd={(e) => props.handleDrop()}
+									>
+										<div className='box'>
+											<div
+												className='check-btn'
+												onClick={() => props.toggleIsChecked(list.task)}
+											>
+												{list.isChecked === true ? (
+													<div className='checked'>
+														<img
+															src='./images/icon-check.svg'
+															alt='check-img'
+														/>
+													</div>
+												) : (
+													''
+												)}
+											</div>
+											{list.isChecked === true ? (
+												<p>
+													<s>{list.task}</s>
+												</p>
+											) : (
+												<p className='todoText'>{list.task}</p>
+											)}
+										</div>
+										<div
+											className='del-btn'
+											onClick={() => props.removeList(list.task)}
+										>
+											<img src='./images/icon-cross.svg' alt='del-btn' />
+										</div>
+									</li>
+								)
+							})}
+						</ul>
+					</div>
+				)
+			}
+			function CompletedTask(props) {
+				const filteredLIst = props.lists.filter(
+					(list) => list.isChecked === true
+				)
+				return (
+					<div className='todoList'>
+						<ul>
+							{filteredLIst.map((list, index) => (
+								<li
+									key={index}
+									draggable
+									onDragStart={(e) => props.handleDragStart(e, list)}
+									onDragOver={(e) => props.handleDragOver(e, list)}
+									onDragEnd={(e) => props.handleDrop()}
+								>
+									<div className='box'>
+										<div
+											className='check-btn'
+											onClick={() => props.toggleIsChecked(list.task)}
+										>
+											{list.isChecked === true ? (
+												<div className='checked'>
+													<img src='./images/icon-check.svg' alt='check-img' />
+												</div>
+											) : (
+												''
+											)}
+										</div>
+										{list.isChecked === true ? (
+											<p>
+												<s>{list.task}</s>
+											</p>
+										) : (
+											<p className='todoText'>{list.task}</p>
+										)}
+									</div>
+									<div
+										className='del-btn'
+										onClick={() => props.removeList(list.task)}
+									>
+										<img src='./images/icon-cross.svg' alt='del-btn' />
+									</div>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+			function ActiveTask(props) {
+				const filteredLIst = props.lists.filter(
+					(list) => list.isChecked === false
+				)
+				return (
+					<div className='todoList'>
+						<ul>
+							{filteredLIst.map((list, index) => (
+								<li
+									key={index}
+									draggable
+									onDragStart={(e) => props.handleDragStart(e, list)}
+									onDragOver={(e) => props.handleDragOver(e, list)}
+									onDragEnd={(e) => props.handleDrop()}
+								>
+									<div className='box'>
+										<div
+											className='check-btn'
+											onClick={() => props.toggleIsChecked(list.task)}
+										>
+											{list.isChecked === true ? (
+												<div className='checked'>
+													<img src='./images/icon-check.svg' alt='check-img' />
+												</div>
+											) : (
+												''
+											)}
+										</div>
+										{list.isChecked === true ? (
+											<p>
+												<s>{list.task}</s>
+											</p>
+										) : (
+											<p className='todoText'>{list.task}</p>
+										)}
+									</div>
+									<div
+										className='del-btn'
+										onClick={() => props.removeList(list.task)}
+									>
+										<img src='./images/icon-cross.svg' alt='del-btn' />
+									</div>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+
+			function RenderBackgroundImage(props) {
+				if (props.isDark === true) {
+					return (
+						<div className='img-dark'>
+							<picture>
+								<source
+									media='(max-width:400px )'
+									srcSet='./images/bg-mobile-dark.jpg'
+								/>
+
+								<img
+									src='./images/bg-desktop-dark.jpg'
+									alt='background-image'
+								/>
+							</picture>
+						</div>
+					)
+				} else {
+					return (
+						<div className='img-light'>
+							<picture>
+								<source
+									media='(max-width:400px )'
+									srcSet='./images/bg-mobile-light.jpg'
+								/>
+								<img
+									src='./images/bg-desktop-light.jpg'
+									alt='background-image'
+								/>
+							</picture>
+						</div>
+					)
+				}
+			}
+
+			class App extends React.Component {
+				constructor(props) {
+					super(props)
+					;(this.state = {
+						todoList: [],
+						input: '',
+						isDark: false,
+						isActive: false,
+						isCompleted: false,
+						dragItem: null,
+						targetItem: null,
+					}),
+						(this.HandleInputChange = this.HandleInputChange.bind(this))
+					this.HandleAddTodo = this.HandleAddTodo.bind(this)
+					this.HandleDeleteTask = this.HandleDeleteTask.bind(this)
+					this.FilterActive = this.FilterActive.bind(this)
+					this.FilterCompleted = this.FilterCompleted.bind(this)
+					this.NumberOfActive = this.NumberOfActive.bind(this)
+					this.FilterAll = this.FilterAll.bind(this)
+					this.HandleToggleCheck = this.HandleToggleCheck.bind(this)
+					this.ClearCompleted = this.ClearCompleted.bind(this)
+					this.RenderList = this.RenderList.bind(this)
+					this.ToggleColorMode = this.ToggleColorMode.bind(this)
+					this.ReverseColorMode = this.ReverseColorMode.bind(this)
+					this.HandleDragOver = this.HandleDragOver.bind(this)
+					this.HandleDragStart = this.HandleDragStart.bind(this)
+					this.HandleDropItem = this.HandleDropItem.bind(this)
+				}
+
+				HandleDragStart = (e, item) => {
+					this.setState({
+						dragItem: item,
+					})
+				}
+				HandleDragOver = (e, item) => {
+					e.preventDefault()
+					this.setState({
+						targetItem: item,
+					})
+				}
+
+				HandleDropItem = (e) => {
+					e.preventDefault()
+					if (this.state.dragItem !== null && this.state.targetItem !== null) {
+						const newItem = [...this.state.todoList]
+						const dragIndex = newItem.indexOf(this.state.dragItem)
+						const targetIndex = newItem.indexOf(this.state.targetItem)
+						const drag = newItem.splice(dragIndex, 1)[0]
+						newItem.splice(targetIndex, 0, drag)
+						this.setState({
+							todoList: newItem,
+							dragItem: null,
+							targetItem: null,
+						})
+					}
+				}
+
+				HandleInputChange = (e) => {
+					this.setState({ input: e.target.value })
+				}
+
+				// DELETE TASK
+				HandleDeleteTask = (task) => {
+					this.setState((prevState) => {
+						return {
+							todoList: prevState.todoList.filter((list) => list.task != task),
+						}
+					})
+				}
+
+				// ADDING TASK
+				HandleAddTodo = () => {
+					this.state.input === ''
+						? null
+						: this.setState((prevState) => {
+								return {
+									todoList: prevState.todoList.concat([
+										{
+											task: this.state.input,
+											isChecked: false,
+										},
+									]),
+									input: '',
+								}
+						  })
+				}
+
+				// HANDLE TOGGLE CHECK
+
+				HandleToggleCheck = (ele) => {
+					this.setState((prevState) => {
+						return {
+							todoList: prevState.todoList.map((list) => {
+								if (list.task === ele) {
+									return {
+										task: list.task,
+										isChecked: !list.isChecked,
+									}
+								} else {
+									return list
+								}
+							}),
+						}
+					})
+				}
+
+				ToggleColorMode = () => {
+					const element = document.querySelector('.container')
+					this.setState({
+						isDark: true,
+					})
+
+					element.classList.add('dark')
+				}
+				ReverseColorMode = () => {
+					const element = document.querySelector('.container')
+					this.setState({
+						isDark: false,
+					})
+
+					element.classList.remove('dark')
+				}
+
+				// FILTER TASK
+				FilterAll = () => {
+					document.querySelector('.filter-All').classList.add('active')
+					document.querySelector('.filter-Active').classList.remove('active')
+					document.querySelector('.filter-Completed').classList.remove('active')
+					this.setState({
+						isActive: false,
+						isCompleted: false,
+					})
+				}
+
+				FilterActive = () => {
+					document.querySelector('.filter-All').classList.remove('active')
+					document.querySelector('.filter-Active').classList.add('active')
+					document.querySelector('.filter-Completed').classList.remove('active')
+					this.setState({
+						isActive: true,
+						isCompleted: false,
+					})
+				}
+
+				FilterCompleted = () => {
+					document.querySelector('.filter-All').classList.remove('active')
+					document.querySelector('.filter-Active').classList.remove('active')
+					document.querySelector('.filter-Completed').classList.add('active')
+					this.setState({
+						isActive: false,
+						isCompleted: true,
+					})
+				}
+				NumberOfActive = () => {
+					return this.state.todoList.length === 0
+						? 0 + ' ' + 'item left'
+						: this.state.todoList.filter((list) => list.isChecked == false)
+								.length +
+								' ' +
+								'items left'
+				}
+
+				ClearCompleted = () => {
+					this.setState({
+						todoList: this.state.todoList.filter(
+							(list) => list.isChecked == false
+						),
+					})
+				}
+
+				RenderList() {
+					if (this.state.isActive) {
+						return (
+							<ActiveTask
+								lists={this.state.todoList}
+								removeList={this.HandleDeleteTask}
+								toggleIsChecked={this.HandleToggleCheck}
+								isActive={this.state.isActive}
+								completed={this.state.isCompleted}
+								handleDragStart={this.HandleDragStart}
+								handleDragOver={this.HandleDragOver}
+								handleDrop={this.HandleDropItem}
+							/>
+						)
+					} else if (this.state.isCompleted) {
+						return (
+							<CompletedTask
+								lists={this.state.todoList}
+								removeList={this.HandleDeleteTask}
+								toggleIsChecked={this.HandleToggleCheck}
+								isActive={this.state.isActive}
+								completed={this.state.isCompleted}
+								handleDragStart={this.HandleDragStart}
+								handleDragOver={this.HandleDragOver}
+								handleDrop={this.HandleDropItem}
+							/>
+						)
+					} else {
+						return (
+							<ToDo
+								lists={this.state.todoList}
+								removeList={this.HandleDeleteTask}
+								toggleIsChecked={this.HandleToggleCheck}
+								isActive={this.state.isActive}
+								completed={this.state.isCompleted}
+								handleDragStart={this.HandleDragStart}
+								handleDragOver={this.HandleDragOver}
+								handleDrop={this.HandleDropItem}
+							/>
+						)
+					}
+				}
+
+				render() {
+					return (
+						<div className='container'>
+							<div className='bg-image'>
+								<RenderBackgroundImage isDark={this.state.isDark} />
+							</div>
+							<div className='todo-list-wrapper'>
+								<div className='header'>
+									<div className='header-element'>
+										<p className='head-text'>TODO</p>
+										<div className='toggle'>
+											{this.state.isDark ? (
+												<img
+													src='./images/icon-sun.svg'
+													className='img-sun'
+													alt='img-sun'
+													onClick={this.ReverseColorMode}
+												/>
+											) : (
+												<img
+													src='./images/icon-moon.svg'
+													className='img-moon'
+													alt='img-moon'
+													onClick={this.ToggleColorMode}
+												/>
+											)}
+										</div>
+									</div>
+									<div className='input-field'>
+										<div
+											className='submit-btn'
+											onClick={this.HandleAddTodo}
+										></div>
+										<input
+											type='text'
+											className='input'
+											onChange={this.HandleInputChange}
+											placeholder='Enter a new task...'
+											value={this.state.input}
+											onKeyDown={(e) =>
+												e.keyCode === 13 ? this.HandleAddTodo() : null
+											}
+										/>
+									</div>
+									<div className='component'>
+										<div className='todo-list-box'>{this.RenderList()}</div>
+										<div className='footer-btn'>
+											<p className='listCount'>{this.NumberOfActive()}</p>
+											<div
+												className='filter-btn'
+												style={{ display: 'flex', gap: 10 }}
+											>
+												<p
+													className='filter-All active'
+													onClick={this.FilterAll}
+												>
+													All
+												</p>
+												<p
+													className='filter-Active'
+													onClick={this.FilterActive}
+												>
+													Active
+												</p>
+												<p
+													className='filter-Completed'
+													onClick={this.FilterCompleted}
+												>
+													Completed
+												</p>
+											</div>
+											<p onClick={this.ClearCompleted}>Clear completed</p>
+										</div>
+									</div>
+									<p
+										className='footer-hint'
+										style={{ padding: 20, textAlign: 'center', fontSize: 14 }}
+									>
+										{' '}
+										Drag and drop to reorder list{' '}
+									</p>
+								</div>
+							</div>
+							<div className='attribution'>
+								Challenge by
+								<a
+									href='https://www.frontendmentor.io?ref=challenge'
+									target='_blank'
+								>
+									Frontend Mentor
+								</a>
+								Coded by{' '}
+								<a href='frontendmentor.io/herdhebayor'>
+									{' '}
+									Adebayo Sikiru Temitope{' '}
+								</a>
+								.
+							</div>
+						</div>
+					)
+				}
+			}
+
+			ReactDOM.render(<App />, document.getElementById('app'))
+		</script>
+	</body>
+</html>
